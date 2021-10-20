@@ -1,5 +1,5 @@
 # A 1
-
+C files compatible with linux, and both parallel and sequencial executed locally therefore this report(performance) is based on that
 
 ### Table of Contents
 1. [Contributors](#Contributor)
@@ -8,7 +8,7 @@
 4. [Question b](#Question-b)
 5. [Question c](#Question-c)
 6. [Question d](#Question-d)
-</br>C files compatible with linux
+</br>
 </br>
 
 ## Contributor
@@ -136,8 +136,7 @@ plt.show()
 
 
 
-
-
+**Thank you**
 
 
 
