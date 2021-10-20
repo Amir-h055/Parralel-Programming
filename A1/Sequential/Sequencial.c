@@ -42,7 +42,8 @@ int main(int argc, const char* argv[])
     
 
 endtime = clock ( );
-takentime =  endtime - startTime;
+//printf("%f",endtime);
+takentime =  (double)(endtime - startTime)/CLOCKS_PER_SEC;
 printf(" Time in Sequential: %lf \n", takentime);
 
     return (0);
