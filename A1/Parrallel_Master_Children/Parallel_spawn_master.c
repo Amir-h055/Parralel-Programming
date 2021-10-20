@@ -35,7 +35,7 @@ int main (int argc, char *argv[])
     int spawn_error;
     MPI_Comm_spawn( "./Parallel_spawn_child", argv, numChildren, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childComm, MPI_ERRCODES_IGNORE );
 
-    MPI_Reduce(NULL, &pisum, 1, MPI_DOUBLE, MPI_SUM, MPI_ROOT ,childComm);  //Specifies child communicator as comm....USE MPI_ROOT (VERY IMPORTANT)
+    MPI_Reduce(&numChildren, &pisum, 1, MPI_DOUBLE, MPI_SUM, MPI_ROOT ,childComm);  //Specifies child communicator as comm....USE MPI_ROOT (VERY IMPORTANT)
 	 
 // if (processId==MASTER)
 //     {

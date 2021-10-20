@@ -51,16 +51,18 @@ MPI_Comm commParent;  //Parent Communicator
 MPI_Comm_get_parent(&commParent);
 
 printf ("MPI task %d has started...\n", taskid);
+//printf("\n numtask %d\n",numtasks);
 
 /* Set seed for random number generator equal to task ID */
 srandom (taskid);
+
 
 avepi = 0;
 for (i = 0; i < ROUNDS; i++) {
    /* All tasks calculate pi using dartboard algorithm */
 
   // printf("  *************  Round:      %d  ********\t", i);
-   homepi += dboard(DARTS);
+   homepi += dboard(DARTS/numtasks);
 
    //printf("homepi is : %lf \n", homepi);
 }
