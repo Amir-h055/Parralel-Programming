@@ -1,10 +1,20 @@
+#include <math.h>
+#ifdef NAN
+/* NAN is supported */
+#endif
+#ifdef INFINITY
+/* INFINITYINITY is supported */
+#endif
+
+
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+
 # define MASTER 0
-# define n 4
+# define n 36
 //
 // mpicc Floyd-Warshall.c -o ./Floyd -lm
 //mpirun -np 4 ./Floyd
@@ -78,20 +88,244 @@ int main(int argc, char *argv[])
     {
         // edge distances
         // int metrix [4][4] = { 
-        //                       {0,            10000000,       -2,      10000000},
-        //                       {6,              0,             5,      10000000},
-        //                       {10000000,     10000000,        0,             4},
-        //                       {10000000,       -1,         10000000,         0},
+        //                       {0,            10000,       -2,      10000},
+        //                       {6,              0,             5,      10000},
+        //                       {10000,     10000,        0,             4},
+        //                       {10000,       -1,         10000,         0},
 
         //                     };
 
-        int metrix [4][4] = { 
-                        {0,              ,            -2,             0},
-                        {4,               0,             2,             4},
-                        {5,               1,             0,             2},
-                        {3,              -1,             1,             0},
+        // int metrix [4][4] = { 
+        //                 {0,              ,            -2,             0},
+        //                 {4,               0,             2,             4},
+        //                 {5,               1,             0,             2},
+        //                 {3,              -1,             1,             0},
 
-                    };
+        //             };
+
+//                 int metrix [36][36] =    {
+                        
+// {100, 1, 100, 100, 4, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 2, 100, 3, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 3, 2, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 4, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 5, 2, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,100 },
+// {6, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 }, 
+// {100, 100, 100, 100, 100, 100, 100, 1, 100, 100, 100, 100, 6, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 2, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 3, 2, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 4, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 5, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 6, 100, 3, 100, 100, 100, 1, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 1, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2, 100, 3, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 3, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 }, 
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 4, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 5, 100, 100, 100, 100, 100, 1100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 6, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2, 100, 100, 6, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 5, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100}, ////
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 4, 100, 100, 2, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 3, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 14 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2, 1, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 1, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {25, 100, 100, 1100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2, 100, 100, 100, 100, 100, 100, 100,100,100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 1, 2, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 3, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 4, 3, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 6, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2, 5, 100, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 4, 100, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2, 3, 100, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 2, 100, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 3, 100, 1, 100, 100 },
+// {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 1, 100 }
+
+
+//                     };
+
+//int INFINITY = 100;
+// int metrix [36][36] = {
+
+// {INFINITY, 1, INFINITY, INFINITY, 4, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, 2, INFINITY, 3, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, 3, 2, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, 4, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 5, 2, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2100, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY,INFINITY },
+// {6, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY }, 
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 1, INFINITY, INFINITY, INFINITY, INFINITY, 6, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 3, 2, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 4, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 5, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 6, INFINITY, 3, INFINITY, INFINITY, INFINITY, 1, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 1, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2, INFINITY, 3, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 3, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY }, 
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 4, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 5, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 1100, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY,INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 6, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2, INFINITY, INFINITY, 6, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 5, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY}, ////
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 4, INFINITY, INFINITY, 2, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 3, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 14 },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2, 1, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 1, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {25, INFINITY, INFINITY, 10, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY,INFINITY,INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 1, 2, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 3, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 4, 3, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 6, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2, 5, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 4, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2, 3, INFINITY, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 2, INFINITY, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 3, INFINITY, 1, INFINITY, INFINITY },
+// {INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, 1, INFINITY }
+
+
+
+
+//         };
+
+
+
+
+
+
+
+
+
+        // int metrix [4][4] = { 
+        //                 {0,              100,            -2,             100},
+        //                 {4,               0,             3,             100},
+        //                 {100,            100,             0,             2},
+        //                 {100,              -1,             100,             0},   
+
+
+        
+        // int metrix [4][4] = { 
+        //                 {0,              100,            -2,             100},
+        //                 {4,               0,             3,             100},
+        //                 {100,            100,             0,             2},
+        //                 {100,              -1,             100,             0},   
+
+
+
+
+        // int metrix [8][8 ]= {
+        //     {100,       5,      7,      100,     100,     100,      100,      100},
+        //     {9,        100,     100,    100,     100,      2,       100,      100},
+        //     {1,         3,     100,    100,     100,       2,         3,      100},
+        //     {100,      100,     100,    100,     100,      100,     100,      100},
+        //     {100,      100,     100,    100,     100,      100,     100,      1},
+        //     {100,      100,     100,    4,     100,      100,     100,      100},
+        //     {100,      100,     100,    100,     100,      100,     100,      100},
+        //     {100,      100,     100,    100,     100,      100,     100,      100}
+
+
+        //                     };
+
+
+
+    //     int metrix [18][18] = {
+
+    // {100,      2,      100,    100,     100,      100,     100,      7,      100,      100,      100,      100,     100,    100,     100,      100,     100,      100   },
+    // {6,       100,     100,    100,     100,      100,     100,     100,     100,      100,     100,      100,     100,    100,     100,      100,     100,      100   },
+    // {100,     100,     100,      7,     100,        5,       8,     100,     100,      100,     100,      100,     100,    100,     100,      100,     100,      100   },
+    // {100,     100,     100,    100,     100,      100,     100,     100,     100,      100,     100,      100,     100,    100,     100,      100,     100,      100   },
+    // {100,       9,     100,    100,     100,        8,     100,     100,     100,      100,     100,      100,     100,    100,     100,      100,     100,      100   },    
+    // {100,     100,     100,    100,       1,      100,     100,     100,     100,      100,     100,      100,     100,    100,     100,      100,     100,      100   },    
+    // {100,     100,     100,    100,     100,      100,     100,     100,     100,      100,     100,      100,     100,    100,     100,      100,     100,      100   },                       
+    // {100,     100,     100,    100,     100,      100,     100,     100,     100,      100,     100,      100,     100,    100,     100,      100,     100,      100   },                       
+    // {100,     100,     100,    100,     100,        3,     100,     100,     100,      100,     100,      100,       2,    100,     100,      100,     100,      100   },                       
+    // {100,     100,     100,    100,     100,      100,       2,     100,       8,      100,       1,      100,       6,    100,     100,      100,     100,      100   },                       
+    // {100,     100,     100,    100,     100,      100,       5,     100,     100,      100,     100,      100,     100,    100,     100,      100,     100,      100   },                       
+    // {100,     100,     100,    100,     100,      100,     100,       2,       2,      100,     100,      100,     100,    100,       4,      100,     100,      100   }, 
+    // {100,     100,     100,    100,     100,      100,     100,     100,     100,        1,     100,      100,     100,    100,     100,      100,     100,      100   },
+    // {100,     100,     100,    100,     100,      100,     100,     100,     100,        8,     100,      100,       3,    100,     100,      100,     100,        8   }, 
+    // {100,     100,     100,    100,     100,      100,     100,     100,     100,      100,     100,      100,     100,    100,     100,        2,     100,      100   }, 
+    // {100,     100,     100,    100,     100,      100,     100,     100,     100,      100,     100,        8,       6,    100,     100,      100,     100,      100   }, 
+    // {100,     100,     100,    100,     100,      100,     100,     100,     100,      100,     100,      100,     100,    100,     100,      100,     100,      100   },  
+    // {100,     100,     100,    100,     100,      100,     100,     100,     100,      100,      9 ,      100,     100,    100,     100,      100,     100,      100   },                 
+                          
+                          
+                          
+                          
+    //                         };
+
+
+//     int metrix [10][10] = {
+
+// {100,        4,     100,    100,     100,      100,       7,       4,    100,    100},
+// {100,      100,       9,    100,     100,        6,       8,       1,    100,    100},
+// {100,      100,     100,    100,      10,      100,     100,     100,    100,    100},
+// {100,      100,     100,    100,     100,      100,     100,     100,      5,    100},
+// {100,      100,       8,      6,     100,        5,     100,     100,    100,    100},
+// {100,      100,     100,    100,       6,      100,     100,     100,    100,    100},
+// {100,        4,     100,    100,     100,        7,     100,     100,    100,    100},
+// {100,      100,       3,    100,     100,      100,     100,     100,    100,    100},
+// {100,      100,     100,    100,     100,      100,     100,     100,    100,      3},
+// {100,      100,       1,    100,     100,      100,     100,     100,    100,    100}
+
+//     };
+
+
+int INF =100;
+
+int metrix[36] [36]= {
+     { 0,   1, INF, INF,   4, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+    {INF,   0,   2, INF,   3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF,   0,   3,   2, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+    {INF, INF, INF,   0,   4, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+    {INF, INF, INF, INF,   0,   5,   2, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,  20, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+     { 6, INF, INF, INF, INF,   0, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF,   0,   1, INF, INF, INF, INF,   6, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF,   0,   2, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF,   0,   3,   2, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   4, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   5, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF,   6, INF,   3, INF, INF,   0,   1, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   1, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   2, INF,   3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   3, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   4, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   5, INF, INF, INF, INF, INF,  10, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   6, INF, INF, INF, INF,   0, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0, INF,   2, INF, INF,   6, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   5,   0, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+    {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   4,   0, INF,   2, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+{    INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   3,   0, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,  14},
+ {   INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   2,   0, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+  {  INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   2,   1,   0, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   1, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+{     25, INF, INF,  10, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   2, INF, INF, INF, INF, INF, INF, INF, INF, INF},
+ {   INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   1,   2, INF, INF, INF, INF, INF, INF, INF},
+  {  INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0,   3, INF, INF, INF, INF, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   4,   3, INF, INF,   0, INF, INF, INF, INF, INF, INF, INF},
+    {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   0, INF, INF, INF, INF,   6, INF},
+{    INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   2,   5,   0, INF, INF, INF, INF, INF},
+ {   INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   4,   0, INF, INF, INF, INF},
+  {  INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   2,   3,   0, INF, INF, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   2,   0, INF, INF},
+    {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   3, INF,   1,   0, INF},
+   { INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF,   1,   0}
+   
+   };
+
+
+
+
+
+        // set diagonal to 0
+        for (int aa= 0; aa < n; aa++)
+        {
+           metrix [aa][aa] = 0;
+        }
+        
+
 
 
         int count = 0;
@@ -100,12 +334,12 @@ int main(int argc, char *argv[])
 
         for (int j = 0 ; j < num_processors_in_d; j++)
         {
-            int lower_x = (i-1)*n/num_processors_in_d+2;
-            int lower_y = (j-1)*n/num_processors_in_d+2;
+            int lower_x = (i)*n/num_processors_in_d;
+            int lower_y = (j)*n/num_processors_in_d;
 
-            int up_x = (i)*n/num_processors_in_d+1;
-            int up_y = (j)*n/num_processors_in_d+1;
-                // printf("(%d, %d) == lower(%d,%d) up(%d,%d) \n", i,j,lower_x, lower_y, up_x, up_y);
+            int up_x = (i+1)*n/num_processors_in_d-1;
+            int up_y = (j+1)*n/num_processors_in_d-1;
+                //printf("(%d, %d) == lower(%d,%d) up(%d,%d) \n", i,j,lower_x, lower_y, up_x, up_y);
             
 
                 
@@ -113,7 +347,7 @@ int main(int argc, char *argv[])
                 {
                     for (int y = lower_y; y <= up_y; y++)
                     {
-                    //   printf(" %d(%d, %d),  ",count,y,x);
+                      // printf(" %d(%d, %d),  ",count,y,x);
 
                     
                     array[count] = metrix[x][y];
@@ -129,13 +363,14 @@ int main(int argc, char *argv[])
         }
             
         }
+        //#####################
         // our metrix into array to scatter among processors
-        for (int i = 0; i < n*n; i++)
-        {
-            printf("(%d=%d), ", i, array[i]);
-        }
-           printf("\n"); 
-           printf("=================\n"); 
+        // for (int i = 0; i < n*n; i++)
+        // {
+        //     printf("(%d=%d), ", i, array[i]);
+        // }
+        //    printf("\n"); 
+        //    printf("=================\n"); 
 
     }
 
@@ -255,8 +490,15 @@ int main(int argc, char *argv[])
     int col_val [n/num_processors_in_d];
     //col_val = (int*)malloc((n/num_processors_in_d) * sizeof(int));
 
+FILE *fpt;
+    if (rank == MASTER)
+    {
+                
+        fpt = fopen("testAll.txt", "w");
+    }
+    
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n+n; i++)
     {
         int p_index;
         for (int index = 1; index < num_processors_in_d+1; index++)
@@ -280,11 +522,11 @@ int main(int argc, char *argv[])
         int index_RC = i%(n/num_processors_in_d);
 
         // checking pindex and the row or colum element in p
-        // if (rank == 0)
-        // {
-        //     printf("i:%d p:%d rc:%d  ,\n",i,p_index,index_RC );
+        if (rank == 0)
+        {
+            printf("i:%d p:%d rc:%d  ,\n",i,p_index,index_RC );
 
-        // }
+        }
 
 
         //assigning valus to send arrays (row_val and _col_val)
@@ -313,21 +555,21 @@ int main(int argc, char *argv[])
                 // seconed row_val [2, 3]
                 // 2nd col_val [ 1, 3]
                 //************************************
-                // if (rank==0)
-                // {
+                if (rank==0)
+                {
  
-                //     printf("       i%d e:%d locR:%d, locC:%d \n",i,e,(index_RC*(n/num_processors_in_d)+e), (index_RC)+ ((n/num_processors_in_d)*e)); 
-                //     printf("val in localArr: %d      %d\n",localArr[(index_RC*(n/num_processors_in_d)+e)], localArr[(index_RC)+ ((n/num_processors_in_d)*e) ] );
-                //     printf("val in sendArrs: %d      %d\n",row_val[e], col_val[e] );
-                // }
+                  //  printf("       i%d e:%d locR:%d, locC:%d \n",i,e,(index_RC*(n/num_processors_in_d)+e), (index_RC)+ ((n/num_processors_in_d)*e)); 
+                    // printf("val in localArr: %d      %d\n",localArr[(index_RC*(n/num_processors_in_d)+e)], localArr[(index_RC)+ ((n/num_processors_in_d)*e) ] );
+                    // printf("val in sendArrs: %d      %d\n",row_val[e], col_val[e] );
+                }
                 ////////////////////////////////////////////////////////////////
                 
             } //// be careful not to cm out this !!
 
-            // if (rank ==0 )
-            // {
-            //     printf("_______\n\n");
-            // }
+            if (rank ==0 )
+            {
+                printf("_______\n\n");
+            }
 
 
 
@@ -413,39 +655,206 @@ int main(int argc, char *argv[])
         
 
         MPI_Barrier(com_cart);
+    
+
+        // se each k
+        int reslt_K [n*n];
+    MPI_Gather(localArr,elemenrt_per_p,MPI_INT,reslt_K,elemenrt_per_p,MPI_INT,MASTER,com_cart);
+
+    if (rank == MASTER)
+    {
+        // for (int i = 0; i < n*n; i++)
+        // {
+        //     printf("%d, ",reslt_Arr[i]);
+        // }
+        printf("\n===============\n");
+        
+
+        // for (int  rnum = 0; rnum < n; rnum++)
+        // {
+            // printf("k= %d\n",i);
+            // for (int rrow = 0; rrow < num_processors_in_d; rrow++)
+            // {
+                /* code */
+            
+            
+                fprintf(fpt, "K%d, \n\n", i);
+                for (int p = 0; p < num_processors_in_d; p++)
+                {
+                                      
+                    for (int drr = 0; drr < n/num_processors_in_d; drr++)
+                    {
+                        for (int dc = 0; dc < num_processors_in_d; dc++)
+                        {
+
+
+                                for (int dr = 0; dr < n/num_processors_in_d; dr++)
+                                {
+                                    // int nn =reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ];
+                                    //int nn =reslt_Arr[ ( (rrow*num_processors_in_d*elemenrt_per_p) + (p)*(n/num_processors_in_d)+dr   ) ];
+                                    int an = ( (p*num_processors_in_d*elemenrt_per_p) + (dc)*(elemenrt_per_p)+ dr +drr *(n/num_processors_in_d) ) ;
+                                    int nn =reslt_K[ an];
+
+                                    fprintf(fpt, "%d, ", nn);
+                                   // printf("%d, ",nn);
+                                    //printf("(%d,%d,%d,%d=%d)%d,     ",p,drr,dc,dr,an,nn);
+                                    //  printf("(%d,%d,%d=%d)%d,     ",rnum,cnum,dr,( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ), reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ]);
+
+                                }
+                                
+                        }
+                      // printf("\n");
+                       fprintf(fpt, "\n");
+                    }
+                     
+                }
+            // fprintf(fp, "\n");
+            // printf("\n");
+            // }
+
+            
+
+       // }
+       fprintf(fpt, "\n");
+       fprintf(fpt, "========\\n");
+        printf("========\n");
+        
+    }
+
+
+
+
+
         //update vals?
 
     /////////////////////
-        int reslt_Arr [n*n];
-        MPI_Gather(localArr,elemenrt_per_p,MPI_INT,reslt_Arr,elemenrt_per_p,MPI_INT,MASTER,com_cart);
+    // // see result after each k++ (in program its i starting from 0 instead of 1)
+    //     int reslt_Arr [n*n];
+    //     MPI_Gather(localArr,elemenrt_per_p,MPI_INT,reslt_Arr,elemenrt_per_p,MPI_INT,MASTER,com_cart);
 
-        // shw by processor (each line is a processors elements)
-        if (rank == MASTER)
-        {
-            for (int  rnum = 0; rnum < n; rnum++)
-            {
-                printf("k= %d\n",i);
+    //     // shw by processor (each line is a processors elements)
+    //     if (rank == MASTER)
+    //     {
+    //         for (int  rnum = 0; rnum < n; rnum++)
+    //         {
+    //             printf("k= %d\n",i);
 
-                for (int cnum = 0; cnum < n/num_processors_in_d; cnum++)
-                {
-                    for (int dr = 0; dr < n/num_processors_in_d; dr++)
-                    {
-                     printf("%d, ",reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ]);
-                     //  printf("(%d,%d,%d=%d)%d,     ",rnum,cnum,dr,( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ), reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ]);
+    //             for (int cnum = 0; cnum < n/num_processors_in_d; cnum++)
+    //             {
+    //                 for (int dr = 0; dr < n/num_processors_in_d; dr++)
+    //                 {
+    //                  printf("%d, ",reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ]);
+    //                  //  printf("(%d,%d,%d=%d)%d,     ",rnum,cnum,dr,( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ), reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ]);
 
-                    }
+    //                 }
                     
-                }
-                printf("\n");
+    //             }
+    //             printf("\n");
                 
 
-            }
-            printf("========\n");
-        }
+    //         }
+    //         printf("========\n");
+    //     }
         
 
         
     }
+    int reslt_Arr [n*n];
+    MPI_Gather(localArr,elemenrt_per_p,MPI_INT,reslt_Arr,elemenrt_per_p,MPI_INT,MASTER,com_cart);
+
+
+        if (rank == MASTER)
+    {
+        fclose(fpt);
+        // for (int i = 0; i < n*n; i++)
+        // {
+        //     printf("%d, ",reslt_Arr[i]);
+        // }
+        printf("\n===============\n");
+        
+        FILE *fp;
+        fp = fopen("test1.txt", "w");
+        // for (int  rnum = 0; rnum < n; rnum++)
+        // {
+            // printf("k= %d\n",i);
+            // for (int rrow = 0; rrow < num_processors_in_d; rrow++)
+            // {
+                /* code */
+            
+            
+
+                for (int p = 0; p < num_processors_in_d; p++)
+                {
+                                      
+                    for (int drr = 0; drr < n/num_processors_in_d; drr++)
+                    {
+                        for (int dc = 0; dc < num_processors_in_d; dc++)
+                        {
+
+
+                                for (int dr = 0; dr < n/num_processors_in_d; dr++)
+                                {
+                                    // int nn =reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ];
+                                    //int nn =reslt_Arr[ ( (rrow*num_processors_in_d*elemenrt_per_p) + (p)*(n/num_processors_in_d)+dr   ) ];
+                                    int an = ( (p*num_processors_in_d*elemenrt_per_p) + (dc)*(elemenrt_per_p)+ dr +drr *(n/num_processors_in_d) ) ;
+                                    int nn =reslt_Arr[ an];
+
+                                    fprintf(fp, "%d, ", nn);
+                                   // printf("%d, ",nn);
+                                    //printf("(%d,%d,%d,%d=%d)%d,     ",p,drr,dc,dr,an,nn);
+                                    //  printf("(%d,%d,%d=%d)%d,     ",rnum,cnum,dr,( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ), reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ]);
+
+                                }
+                                
+                        }
+                      // printf("\n");
+                       fprintf(fp, "\n");
+                    }
+                     
+                }
+            // fprintf(fp, "\n");
+            // printf("\n");
+            // }
+
+            
+
+       // }
+        printf("========\n");
+        fclose(fp);
+    }
+
+
+
+    // if (rank == MASTER)
+    // {
+    //     FILE *fp;
+    //     fp = fopen("test1.txt", "w");
+    //     for (int  rnum = 0; rnum < n; rnum++)
+    //     {
+    //         // printf("k= %d\n",i);
+
+    //         for (int cnum = 0; cnum < n/num_processors_in_d; cnum++)
+    //         {
+    //             for (int dr = 0; dr < n/num_processors_in_d; dr++)
+    //             {
+    //                 // int nn =reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ];
+    //                 int nn =reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ];
+
+    //                 fprintf(fp, "%d, ", nn);
+    //                 printf("%d, ",nn;
+    //                 //  printf("(%d,%d,%d=%d)%d,     ",rnum,cnum,dr,( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ), reslt_Arr[ ( (rnum*n) + (cnum)*(n/num_processors_in_d)+dr   ) ]);
+
+    //             }
+                
+    //         }
+    //         fprintf(fp, "\n");
+    //         printf("\n");
+            
+
+    //     }
+    //     printf("========\n");
+    //     fclose(fp);
+    // }
 
 
 
@@ -483,6 +892,7 @@ void show_p_Array(int numtasks, MPI_Comm com, int *array, int arraySize, int ran
         {
             for (int i = 0; i < arraySize; i++)
             {
+                fopen("newprogram.txt","w");
 
                 printf("r%d:%d, ", rank, array[i]);
             }
